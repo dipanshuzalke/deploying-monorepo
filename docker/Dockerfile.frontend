@@ -3,20 +3,21 @@ FROM oven/bun:1
 WORKDIR /usr/src/app
 
 COPY ./packages ./packages
-COPY ./bun.lock ./bun.lock
+COPY ./apps/web ./apps/web
+COPY ./prisma ./prisma
 
 COPY ./package.json ./package.json
+COPY ./bun.lock ./bun.lock
 COPY ./turbo.json ./turbo.json
+COPY ./tsconfig.json ./tsconfig.json
 
-COPY ./apps/web ./apps/web
-
-# Make DATABASE_URL available during build
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
 
 RUN bun install
-RUN bun run db:generate
-RUN bun run build
+
+RUN bun turbo run db:generate --filter=web
+RUN bun turbo run build --filter=web
 
 EXPOSE 3000
 
