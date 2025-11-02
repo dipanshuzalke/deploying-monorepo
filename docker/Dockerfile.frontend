@@ -15,8 +15,8 @@ ENV DATABASE_URL=$DATABASE_URL
 
 RUN bun install
 
-RUN bun turbo run db:generate --filter=web
-RUN bun turbo run build --filter=web
+RUN bun turbo run db:generate 
+RUN bun turbo run build 
 
 EXPOSE 3000
 
